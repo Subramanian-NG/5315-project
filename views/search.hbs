@@ -1,0 +1,60 @@
+<html>
+    <head>
+    <title>Search Restaurant</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <header>
+        <p>
+            Search Restaurant
+        </p>
+        </header>
+        <form action="/search" method="post" id="searchForm">
+        <label for="page">Page:</label><br>
+        <input type="number" id="page" name="page" value="{{page}}"><br><br>
+        <label for="perPage">Items Per Page:</label><br>
+        <input type="number" id="perPage" name="perPage" value="{{perPage}}"><br><br>
+        <label for="borough">Borough:</label><br>
+        <input type="text" id="borough" name="borough" value="{{borough}}"><br><br>
+        <input type="submit" value="Submit" style="background-color: #007BFF">
+        <input type="button" id="clear" value="Clear" onclick="clearValues()" style="background-color: #ff4800"><br><br>
+        </form>
+        <br><br>
+        {{#if showResults}}
+        <div id="results">
+        <table border='1' style="text-align: center;margin: auto;">
+            <thead>
+            <tr>
+                <th>Restaurant Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Borough</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each restaurants}}
+                <tr>
+                <td>{{this.restaurant_id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.address.building}} {{this.address.street}}, {{this.address.zipcode}}</td>
+                <td>{{this.borough}}</td>
+                <td><a href="restaurants/review/{{this._id}}">Review</a></td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        </div>
+        {{/if}}
+
+    </body>
+</html>
+
+<script>
+  function clearValues() {
+    document.getElementById("page").value = "";
+    document.getElementById("perPage").value = ""; 
+    document.getElementById("borough").value = ""; 
+    document.getElementById('results').innerHTML = '';
+  }
+</script>

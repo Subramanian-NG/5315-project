@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Review Restaurant</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <h1>Review Restaurant</h1>
+    <h2>{{restaurant.name}}</h2>
+    <form action="/restaurants/review/{{restaurant._id}}" method="post">
+        <label for="rating">Rating:</label><br>
+        <input type="number" id="rating" name="rating" min="1" max="5" required><br><br>
+        <label for="feedback">Feedback:</label><br>
+        <textarea id="feedback" name="feedback" required></textarea><br><br>
+        <input type="submit" value="Submit Review" style="background-color: #007BFF">
+    </form>
+
+    <div id="reviews">
+        <h2>Existing Reviews</h2>
+        <ul id="reviewsList">
+            {{#each restaurant.reviews}}
+            <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</body>
+</html>
