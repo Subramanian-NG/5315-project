@@ -92,7 +92,7 @@ const registerUser = async (name, password) => {
     if (existingUser) {
       return { message: "Username already exists", success: false };
     }
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       name: name,
       password: hashedPassword,
@@ -108,9 +108,9 @@ const registerUser = async (name, password) => {
   }
 };
 
-const authenticateUser = async (username, password) => {
+const authenticateUser = async (name, password) => {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ name });
     if (!user) {
       return { success: false, message: "User not found" };
     }

@@ -19,14 +19,25 @@ const jwt = require("jsonwebtoken");
 const { body, check, validationResult } = require("express-validator");
 
 const { engine } = require("express-handlebars");
-const handlebars = require("handlebars");
 
 const port = process.env.PORT || 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.engine(
+  ".hbs",
+  engine({
+    extname: ".hbs",
+    helpers: {},
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+    },
+  })
+);
 app.set("view engine", ".hbs");
+app.set("views", __dirname + "/views");
 app.use(express.static(path.join(__dirname, "public")));
+app.set("public", __dirname + "/public");
 
 function verifyToken(req, res, next) {
   const bearerHeadr = req.headers["authorization"];
@@ -47,6 +58,10 @@ function verifyToken(req, res, next) {
     return;
   }
 }
+
+app.get("/", async (req, res) => {
+  res.send("<h1> Welcome to Restaurants Website </h1>");
+});
 
 app.post("/api/restaurants", verifyToken, async (req, res) => {
   try {
@@ -205,8 +220,8 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const result = await db.authenticateUser(username, password);
+  const { name, password } = req.body;
+  const result = await db.authenticateUser(name, password);
   if (result.success) {
     res.cookie("token", result.token);
     res.json({ message: result.message });
